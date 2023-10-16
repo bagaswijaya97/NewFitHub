@@ -1,0 +1,6 @@
+.sehat-background {
+    background-color: #RRGGBB;  Ganti RR, GG, dan BB dengan nilai yang sesuai 
+    background-position: 100% 25px;
+    background-size: 500px auto;
+    background-image: url('/media/misc/sehat.png');
+}
