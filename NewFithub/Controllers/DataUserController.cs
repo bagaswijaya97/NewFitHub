@@ -1,14 +1,40 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NewFithub.Models;
+using System.Globalization;
 
 namespace NewFithub.Controllers
 {
 	public class DataUserController : Controller
 	{
+		#region Initials
+		List<DataUserViewModel> objDataUser = new List<DataUserViewModel>();
+
+		#endregion
+
 		// GET: DataUserController
 		public ActionResult Index()
 		{
-			return View();
+			DateTime now = DateTime.Now;
+			//string strBirthDate = now.ToString("dd MMM yyyy", new CultureInfo("id-ID"));
+			string strBirthDate = "15 Sept 1997";
+			List<DataUserViewModel> listOfUsers = new List<DataUserViewModel>
+			{
+				new DataUserViewModel
+				{
+					Username = "6281288201049",
+					CardNumber = "1000150991997",
+					FullName = "Bagas Wijaya",
+					BirthDate = strBirthDate,
+					Product = "Managed Care",
+					CorporateName = "PT. FITAJA DIGITAL NUSANTARA"
+				}
+			    // Tambahkan objek DataUserViewModel lain di sini
+			};
+
+			objDataUser.AddRange(listOfUsers);
+
+			return View(objDataUser);
 		}
 
 		// GET: DataUserController/Details/5

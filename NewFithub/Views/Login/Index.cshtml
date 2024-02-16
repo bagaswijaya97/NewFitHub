@@ -1,0 +1,262 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model LoginViewModel
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] Sign in</title>
+
+    <!--begin::Fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+    <!--end::Fonts-->
+    <!--begin::Page Vendor Stylesheets(used by this page)-->
+    <link href="plugins/custom/leaflet/leaflet.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendor Stylesheets-->
+    <!--begin::Global Stylesheets Bundle(used by all pages)-->
+    <link href="plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Global Stylesheets Bundle-->
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="~/lib/toastr/toastr.min.css">
+
+    <!-- Toastr JS -->
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/toastr/toastr.min.js"></script>
+
+    <style>
+        .custom-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 350px;
+        }
+
+        /* styling Toastr container */
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        /* styling Toastr */
+        .toast {
+            background-color: #ffcccc;
+            color: #cc0000;
+        }
+
+        .indicator-progress {
+            display: none;
+        }
+
+        .loading .indicator-label {
+            display: none;
+        }
+
+        .loading .indicator-progress {
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body id="kt_body" class="bg-body">
+
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <!-- Toastr Container -->
+        <div id="toast-container" class="toast-container"></div>
+    }
+
+    <!--begin::Root-->
+    <div class="d-flex flex-column flex-root">
+        <!--begin::Authentication - Sign-in -->
+        <div class="d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed" style="background-image: url(media/illustrations/sigma-1/14.png">
+            <!--begin::Content-->
+            <div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
+                <!--begin::Logo-->
+                <a asp-action="Index" class="mb-12">
+                    <img alt="Logo" src="media/logos/fitaja-logo.svg" class="h-80px" />
+                </a>
+                <!--end::Logo-->
+                <!--begin::Wrapper-->
+                <div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
+                    <!--begin::Form-->
+                    <form class="form w-100" novalidate="novalidate" method="post" asp-action="Login" id="kt_sign_in_form">
+                        <!--begin::Heading-->
+                        <div class="text-center mb-10">
+                            <!--begin::Title-->
+                            <h1 class="text-dark mb-3">Sign In to New FitHub</h1>
+                            <!--end::Title-->
+                            <!--begin::Link-->
+                            <div class="text-gray-400 fw-bold fs-4">
+                                New Here?
+                                <a href="../../demo9/dist/authentication/layouts/basic/sign-up.html" class="link-primary fw-bolder">Create an Account</a>
+                            </div>
+                            <!--end::Link-->
+                        </div>
+                        <!--begin::Heading-->
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-10">
+                            <!--begin::Label-->
+                            <label class="form-label fs-6 fw-bolder text-dark">Email</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <input asp-for="Email" class="form-control form-control-lg form-control-solid" type="text" name="email" required="true" autocomplete="on" id="emailInput" />
+                            <!--end::Input-->
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-10">
+                            <!--begin::Wrapper-->
+                            <div class="d-flex flex-stack mb-2">
+                                <!--begin::Label-->
+                                <label class="form-label fw-bolder text-dark fs-6 mb-0">Password</label>
+                                <!--end::Label-->
+                                <!--begin::Link-->
+                                <a href="../../demo9/dist/authentication/layouts/basic/password-reset.html" class="link-primary fs-6 fw-bolder">Forgot Password ?</a>
+                                <!--end::Link-->
+                            </div>
+                            <!--end::Wrapper-->
+                            <!--begin::Input-->
+
+                            <input asp-for="Password" class="form-control form-control-lg form-control-solid" type="password" name="password" required="true" autocomplete="off" id="passwordInput" />
+                            <!-- Checkbox untuk show/hide password -->
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" id="showPasswordCheckbox">
+                                <label class="text-gray-400 fw-bold fs-5" for="showPasswordCheckbox">
+                                    Show Password
+                                </label>
+                            </div>
+
+                            <!--end::Input-->
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Actions-->
+                        <div class="text-center">
+                            <!--begin::Submit button-->
+                            <button type="submit" id="kt_sign_in_submit" class="btn btn-lg btn-primary w-100 mb-5">
+                                <span class="indicator-label">Continue</span>
+                                <span class="indicator-progress">
+                                    Please wait...
+                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            </button>
+                            <!--end::Submit button-->
+                            <!--end::Actions-->
+                        </div>
+                    </form>
+                    <!--end::Form-->
+                </div>
+                <!--end::Wrapper-->
+            </div>
+            <!--end::Content-->
+            <!--begin::Footer-->
+            <div class="d-flex flex-center flex-column-auto p-10">
+                <!--begin::Links-->
+                <div class="d-flex align-items-center fw-bold fs-6">
+                    <a href="https://keenthemes.com" class="text-muted text-hover-primary px-2">About</a>
+                    <a href="mailto:support@keenthemes.com" class="text-muted text-hover-primary px-2">Contact</a>
+                    <a href="https://1.envato.market/EA4JP" class="text-muted text-hover-primary px-2">Contact Us</a>
+                </div>
+                <!--end::Links-->
+            </div>
+            <!--end::Footer-->
+        </div>
+        <!--end::Authentication - Sign-in-->
+    </div>
+    <!--end::Root-->
+    <!--end::Main-->
+    <!--begin::Javascript-->
+    <script>var hostUrl = "";</script>
+    <!--begin::Global Javascript Bundle(used by all pages)-->
+    <script src="plugins/global/plugins.bundle.js"></script>
+    <script src="js/scripts.bundle.js"></script>
+    <!--end::Global Javascript Bundle-->
+    <!--begin::Page Custom Javascript(used by this page)-->
+    @*<script src="js/custom/authentication/sign-in/general.js"></script>*@
+    <!--end::Page Custom Javascript-->
+    <!--end::Javascript-->
+    <!-- Script Toastr -->
+    <script>
+        $(document).ready(function () {
+            // Cek apakah ada pesan kesalahan sebelum menampilkan toastr
+            var errorMessage = '@ViewBag.ErrorMessage';
+            if (errorMessage && errorMessage !== 'undefined') {
+                var emailInput = $('#emailInput');
+                var passwordInput = $('#passwordInput');
+                var emailValue = emailInput.val();
+                var passwordValue = passwordInput.val();
+                showAndHideErrorToast(errorMessage, emailValue, passwordValue);
+            }
+
+            // Checkbox show/hide password
+            $('#showPasswordCheckbox').on('change', function () {
+                var passwordInput = $('#passwordInput');
+                if ($(this).is(':checked')) {
+                    // Menampilkan password
+                    passwordInput.attr('type', 'text');
+                } else {
+                    // Menyembunyikan password
+                    passwordInput.attr('type', 'password');
+                }
+            });
+
+            // Tambahkan event listener untuk input email
+            $('#emailInput').on('input', function () {
+                $(this).removeClass('is-invalid');
+            });
+
+            // Tambahkan event listener untuk input password
+            $('#passwordInput').on('input', function () {
+                $(this).removeClass('is-invalid');
+            });
+
+            $('#kt_sign_in_submit').on('click', function () {
+                // Menambahkan class "loading" saat tombol diklik
+                $(this).addClass('loading');
+
+                // Di sini, Anda dapat menambahkan logika AJAX atau tindakan lainnya
+
+                // Contoh penundaan selama 3 detik (digunakan untuk simulasi)
+                setTimeout(function () {
+                    // Menghapus class "loading" setelah tindakan selesai
+                    $('#kt_sign_in_submit').removeClass('loading');
+                }, 3000);
+            });
+
+        });
+
+        function showAndHideErrorToast(errorMessage, emailValue, passwordValue) {
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                timeOut: 5000,
+                extendedTimeOut: 1000,
+                preventDuplicates: true,
+                preventOpenDuplicates: true
+            };
+
+            // Menampilkan toastr error
+            toastr.error(errorMessage);
+
+            // Menambahkan kelas CSS dan warna merah pada input yang error
+            $('#emailInput').addClass('is-invalid');
+            $('#passwordInput').addClass('is-invalid');
+
+            // Mengembalikan nilai input setelah menampilkan toast
+            $('#emailInput').val(emailValue);
+            $('#passwordInput').val(passwordValue);
+        }
+    </script>
+
+
+</body>

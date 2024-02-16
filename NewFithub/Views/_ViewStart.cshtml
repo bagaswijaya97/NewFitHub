@@ -1,3 +1,16 @@
 ﻿@{
+    // Tentukan layout default
     Layout = "_Layout";
+
+    // Dapatkan nilai path lengkap
+    string currentPath = Context.Request.Path;
+
+    // Cek apakah halaman yang sedang di-render adalah halaman login
+    bool isLoginPage = currentPath.StartsWith("/", StringComparison.OrdinalIgnoreCase);
+
+    // Jika halaman login, atur layout menjadi null (tidak menggunakan layout)
+    if (isLoginPage)
+    {
+        Layout = null;
+    }
 }
